@@ -1,0 +1,509 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Weekend Ardennen November 2026 — 16 personen</title>
+  <style>
+    :root {
+      --green-dark: #2d5016;
+      --green-mid: #4a7c28;
+      --green-light: #e8f0de;
+      --cream: #faf8f2;
+      --cream-dark: #f0ece0;
+      --amber: #d4a017;
+      --amber-light: #fef3c7;
+      --red-light: #fee2e2;
+      --grey: #9ca3af;
+      --grey-light: #f3f4f6;
+      --text: #1a1a1a;
+      --text-muted: #6b7280;
+      --shadow: 0 2px 8px rgba(0,0,0,0.08);
+      --shadow-hover: 0 4px 16px rgba(0,0,0,0.12);
+      --radius: 12px;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+      background: var(--cream);
+      color: var(--text);
+      line-height: 1.6;
+    }
+
+    header {
+      background: linear-gradient(135deg, var(--green-dark), var(--green-mid));
+      color: white;
+      padding: 2.5rem 1.5rem;
+      text-align: center;
+    }
+
+    header h1 {
+      font-size: 1.8rem;
+      font-weight: 700;
+      margin-bottom: 0.5rem;
+    }
+
+    header p {
+      font-size: 1rem;
+      opacity: 0.9;
+    }
+
+    .container {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 1.5rem;
+    }
+
+    .property-card {
+      background: white;
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      margin-bottom: 1.5rem;
+      overflow: hidden;
+      transition: box-shadow 0.2s;
+    }
+
+    .property-card:hover {
+      box-shadow: var(--shadow-hover);
+    }
+
+    .card-header {
+      padding: 1.5rem 1.5rem 1rem;
+      border-bottom: 1px solid var(--cream-dark);
+    }
+
+    .card-header h2 {
+      font-size: 1.35rem;
+      font-weight: 700;
+      color: var(--green-dark);
+      display: flex;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+    }
+
+    .rank {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 28px;
+      height: 28px;
+      background: var(--green-mid);
+      color: white;
+      border-radius: 50%;
+      font-size: 0.85rem;
+      font-weight: 700;
+      flex-shrink: 0;
+    }
+
+    .badge {
+      display: inline-block;
+      padding: 0.15rem 0.6rem;
+      border-radius: 20px;
+      font-size: 0.75rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.03em;
+    }
+
+    .badge.confirmed {
+      background: var(--green-light);
+      color: var(--green-dark);
+    }
+
+    .badge.unconfirmed {
+      background: var(--amber-light);
+      color: #92400e;
+    }
+
+    .badge.over-budget {
+      background: var(--red-light);
+      color: #991b1b;
+    }
+
+    .meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1rem;
+      padding: 0.75rem 1.5rem;
+      background: var(--cream);
+      font-size: 0.9rem;
+      color: var(--text-muted);
+    }
+
+    .meta span { white-space: nowrap; }
+
+    .card-body { padding: 1rem 1.5rem 1.5rem; }
+
+    .amenities {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.4rem;
+      margin-bottom: 1rem;
+    }
+
+    .chip {
+      display: inline-block;
+      padding: 0.25rem 0.65rem;
+      border-radius: 20px;
+      font-size: 0.8rem;
+      font-weight: 500;
+    }
+
+    .chip.has {
+      background: var(--green-light);
+      color: var(--green-dark);
+    }
+
+    .chip.missing {
+      background: var(--grey-light);
+      color: var(--grey);
+      text-decoration: line-through;
+    }
+
+    .chip.bonus {
+      background: #ede9fe;
+      color: #5b21b6;
+    }
+
+    .included {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.85rem;
+      margin-bottom: 1rem;
+    }
+
+    .included td {
+      padding: 0.4rem 0.6rem;
+      border-bottom: 1px solid var(--cream-dark);
+    }
+
+    .included td:first-child {
+      font-weight: 500;
+      width: 40%;
+    }
+
+    .included .ok { color: var(--green-mid); }
+    .included .warn { color: var(--amber); }
+    .included .na { color: var(--grey); }
+
+    .notes {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      margin-bottom: 1rem;
+      padding: 0.75rem;
+      background: var(--cream);
+      border-radius: 8px;
+    }
+
+    .btn {
+      display: inline-block;
+      padding: 0.65rem 1.5rem;
+      background: var(--green-mid);
+      color: white;
+      text-decoration: none;
+      border-radius: 8px;
+      font-weight: 600;
+      font-size: 0.9rem;
+      transition: background 0.2s;
+    }
+
+    .btn:hover { background: var(--green-dark); }
+
+    .score-bar {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      margin: 0.5rem 0;
+      font-size: 0.8rem;
+      color: var(--text-muted);
+    }
+
+    .score-fill {
+      height: 6px;
+      border-radius: 3px;
+      background: var(--green-mid);
+    }
+
+    .score-track {
+      flex: 1;
+      height: 6px;
+      border-radius: 3px;
+      background: var(--cream-dark);
+      overflow: hidden;
+    }
+
+    footer {
+      text-align: center;
+      padding: 2rem 1.5rem;
+      color: var(--text-muted);
+      font-size: 0.8rem;
+    }
+
+    @media (max-width: 600px) {
+      header h1 { font-size: 1.4rem; }
+      .meta { gap: 0.5rem; font-size: 0.8rem; }
+      .card-header, .card-body { padding: 1rem; }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Weekend Ardennen — 6-8 november 2026</h1>
+    <p>16 personen &middot; Budget &euro;2.000-&euro;3.000 &middot; Top 5 opties</p>
+  </header>
+
+  <div class="container">
+
+    <!-- #1 Le Coup de Coeur de Marie -->
+    <article class="property-card">
+      <div class="card-header">
+        <h2>
+          <span class="rank">1</span>
+          Le Coup de Coeur de Marie
+          <span class="badge confirmed">Beschikbaar</span>
+          <span class="badge over-budget">&euro;215 over budget</span>
+        </h2>
+        <div class="score-bar">
+          Score: 11/12
+          <div class="score-track"><div class="score-fill" style="width:91.7%"></div></div>
+        </div>
+      </div>
+      <div class="meta">
+        <span>&#x1F4CD; Waimes, Luik</span>
+        <span>&#x1F4B6; &euro;3.215 (2 nachten)</span>
+        <span>&#x1F465; 20 personen</span>
+        <span>&#x1F6CF;&#xFE0F; 8 kamers (en-suite)</span>
+        <span>&#x2B50; 9,4/10</span>
+      </div>
+      <div class="card-body">
+        <div class="amenities">
+          <span class="chip has">&#x1F3B1; Biljart</span>
+          <span class="chip has">&#x1F9D6; Sauna (18p!)</span>
+          <span class="chip has">&#x1F6C1; Jacuzzi + Nordic bath</span>
+          <span class="chip has">&#x1F525; Open haard</span>
+          <span class="chip bonus">&#x1F3D3; Pingpong</span>
+          <span class="chip bonus">&#x1F3D0; Volleybal</span>
+          <span class="chip bonus">&#x1F3F8; Badminton</span>
+          <span class="chip bonus">&#x26BD; Petanque</span>
+          <span class="chip bonus">&#x1F50C; EV lader</span>
+        </div>
+        <table class="included">
+          <tr><td>Beddengoed</td><td class="ok">&#x2713; Inbegrepen (opgemaakt)</td></tr>
+          <tr><td>Handdoeken</td><td class="ok">&#x2713; Inbegrepen</td></tr>
+          <tr><td>Eindschoonmaak</td><td class="ok">&#x2713; Inbegrepen</td></tr>
+          <tr><td>WiFi</td><td class="ok">&#x2713; Ja</td></tr>
+          <tr><td>Keuken</td><td class="ok">&#x2713; Volledig (2 ovens, vaatwasser)</td></tr>
+          <tr><td>Parking</td><td class="ok">&#x2713; 10 plaatsen + EV</td></tr>
+          <tr><td>Theedoeken</td><td class="warn">&#x26A0; Zelf meebrengen</td></tr>
+        </table>
+        <div class="notes">
+          Enige optie met <strong>bevestigde beschikbaarheid</strong> voor 6-8 nov 2026.
+          Tuin van 4.500 m&sup2;, plancha voor 16 personen, infraroodcabine.
+          Waarborg &euro;1.000. Prijs = &euro;201/persoon voor 2 nachten.
+        </div>
+        <a href="https://en.ardennes-etape.be/holiday-houses-ardennes/Waimes/Holiday-cottage-Sauna-Jacuzzi-106002-01/" class="btn" target="_blank" rel="noopener">Bekijk &amp; Boek &rarr;</a>
+      </div>
+    </article>
+
+    <!-- #2 Villa de Luxe -->
+    <article class="property-card">
+      <div class="card-header">
+        <h2>
+          <span class="rank">2</span>
+          Villa de Luxe — Sainte-Ode
+          <span class="badge unconfirmed">Beschikbaarheid checken</span>
+        </h2>
+        <div class="score-bar">
+          Score: 10/12
+          <div class="score-track"><div class="score-fill" style="width:83.3%"></div></div>
+        </div>
+      </div>
+      <div class="meta">
+        <span>&#x1F4CD; Sainte-Ode, Luxemburg</span>
+        <span>&#x1F4B6; &euro;1.559-&euro;1.800 (2 nachten)</span>
+        <span>&#x1F465; 16 personen</span>
+        <span>&#x1F6CF;&#xFE0F; 8 kamers (en-suite)</span>
+      </div>
+      <div class="card-body">
+        <div class="amenities">
+          <span class="chip has">&#x1F3B1; Biljart</span>
+          <span class="chip has">&#x1F9D6; Sauna (infrarood)</span>
+          <span class="chip has">&#x1F6C1; Jacuzzi</span>
+          <span class="chip has">&#x1F525; Open haard (gas)</span>
+          <span class="chip bonus">&#x1F3AF; Darts</span>
+          <span class="chip bonus">&#x1F37A; Bar</span>
+          <span class="chip bonus">&#x1F6B2; Fietsstalling (10)</span>
+          <span class="chip bonus">&#x1F50C; EV lader</span>
+        </div>
+        <table class="included">
+          <tr><td>Beddengoed</td><td class="ok">&#x2713; Inbegrepen</td></tr>
+          <tr><td>Handdoeken</td><td class="warn">&#x26A0; Huuroptie beschikbaar</td></tr>
+          <tr><td>Eindschoonmaak</td><td class="ok">&#x2713; Inbegrepen</td></tr>
+          <tr><td>WiFi</td><td class="ok">&#x2713; Ja</td></tr>
+          <tr><td>Keuken</td><td class="ok">&#x2713; Volledig (2 inductie, 2 ovens, espresso)</td></tr>
+          <tr><td>Parking</td><td class="ok">&#x2713; 8 plaatsen + EV</td></tr>
+          <tr><td>Huisdieren</td><td class="ok">&#x2713; 1 hond toegestaan</td></tr>
+        </table>
+        <div class="notes">
+          Verbouwde dorpsschool, gerenoveerd in 2023. 400 m&sup2; over 3 verdiepingen.
+          Tuin 1.200 m&sup2;, meerdere terrassen. Waarborg &euro;800.
+          <strong>Beste prijs-kwaliteit</strong> — alle faciliteiten ruim onder budget.
+        </div>
+        <a href="https://fr.ardennes-etape.be/maisons-de-vacances-ardennes/Sainte-Ode/Villa-de-Luxe-Sauna-Jacuzzi-107467-01/" class="btn" target="_blank" rel="noopener">Bekijk &amp; Boek &rarr;</a>
+      </div>
+    </article>
+
+    <!-- #3 Le Bochet Cote Pres -->
+    <article class="property-card">
+      <div class="card-header">
+        <h2>
+          <span class="rank">3</span>
+          Le Bochet C&ocirc;t&eacute; Pr&eacute;s — Rochehaut
+          <span class="badge unconfirmed">Beschikbaarheid checken</span>
+        </h2>
+        <div class="score-bar">
+          Score: 9/12
+          <div class="score-track"><div class="score-fill" style="width:75%"></div></div>
+        </div>
+      </div>
+      <div class="meta">
+        <span>&#x1F4CD; Rochehaut, Bouillon</span>
+        <span>&#x1F4B6; &euro;2.195 (2 nachten, all-in)</span>
+        <span>&#x1F465; 18 personen</span>
+        <span>&#x1F6CF;&#xFE0F; 8 kamers (priv&eacute; douche)</span>
+      </div>
+      <div class="card-body">
+        <div class="amenities">
+          <span class="chip has">&#x1F3B1; Biljart</span>
+          <span class="chip has">&#x1F9D6; Infraroodcabine</span>
+          <span class="chip has">&#x1F6C1; Spa / hot tub</span>
+          <span class="chip has">&#x1F525; Houtkachel</span>
+          <span class="chip bonus">&#x26BD; Petanque</span>
+        </div>
+        <table class="included">
+          <tr><td>Beddengoed</td><td class="ok">&#x2713; Inbegrepen (opgemaakt)</td></tr>
+          <tr><td>Handdoeken</td><td class="ok">&#x2713; Inbegrepen + badjassen</td></tr>
+          <tr><td>Eindschoonmaak</td><td class="ok">&#x2713; Inbegrepen</td></tr>
+          <tr><td>WiFi</td><td class="ok">&#x2713; Ja</td></tr>
+          <tr><td>Keuken</td><td class="ok">&#x2713; Volledig (raclette, cr&ecirc;pe, fondue)</td></tr>
+          <tr><td>Parking</td><td class="ok">&#x2713; 10 plaatsen</td></tr>
+          <tr><td>Huisdieren</td><td class="ok">&#x2713; Gratis toegestaan</td></tr>
+          <tr><td>Brandhout</td><td class="ok">&#x2713; Inbegrepen</td></tr>
+        </table>
+        <div class="notes">
+          <strong>Alles inbegrepen</strong> — geen verborgen kosten. Geopend december 2021.
+          TV in elke kamer. Wasmachine + droger. Omheinde tuin.
+          Contact: +32 61 46 10 00 / eloise@aubergederochehaut.com.
+          Zusterpand "C&ocirc;t&eacute; Village" (16p) ook beschikbaar aan zelfde prijs.
+        </div>
+        <a href="https://www.lesgitesderochehaut.be/fr/les-gites-de-rochehaut/le-bochet-cote-pres" class="btn" target="_blank" rel="noopener">Bekijk &amp; Boek &rarr;</a>
+      </div>
+    </article>
+
+    <!-- #4 Maison Raeren -->
+    <article class="property-card">
+      <div class="card-header">
+        <h2>
+          <span class="rank">4</span>
+          Vakantiehuis Raeren
+          <span class="badge unconfirmed">Beschikbaarheid checken</span>
+        </h2>
+        <div class="score-bar">
+          Score: 8/12
+          <div class="score-track"><div class="score-fill" style="width:66.7%"></div></div>
+        </div>
+      </div>
+      <div class="meta">
+        <span>&#x1F4CD; Raeren, Luik (bij Eupen)</span>
+        <span>&#x1F4B6; &euro;1.500-&euro;2.000 (2 nachten)</span>
+        <span>&#x1F465; 16 personen</span>
+        <span>&#x1F6CF;&#xFE0F; 8 kamers (6 en-suite)</span>
+      </div>
+      <div class="card-body">
+        <div class="amenities">
+          <span class="chip has">&#x1F3B1; Biljart</span>
+          <span class="chip has">&#x1F9D6; Sauna (6p)</span>
+          <span class="chip missing">&#x1F6C1; Jacuzzi</span>
+          <span class="chip has">&#x1F525; Houtkachel</span>
+          <span class="chip bonus">&#x1F3CA; Verwarmd zwembad (jaarrond)</span>
+          <span class="chip bonus">&#x1F3D3; Pingpong</span>
+          <span class="chip bonus">&#x1F3AF; Darts</span>
+          <span class="chip bonus">&#x1F525; Vuurplaats (tuin)</span>
+        </div>
+        <table class="included">
+          <tr><td>Beddengoed</td><td class="ok">&#x2713; Inbegrepen (opgemaakt)</td></tr>
+          <tr><td>Handdoeken</td><td class="warn">&#x26A0; Zelf meebrengen</td></tr>
+          <tr><td>Eindschoonmaak</td><td class="ok">&#x2713; Inbegrepen</td></tr>
+          <tr><td>WiFi</td><td class="ok">&#x2713; Ja</td></tr>
+          <tr><td>Keuken</td><td class="ok">&#x2713; Volledig (5-pits inductie, 2 ovens)</td></tr>
+          <tr><td>Parking</td><td class="ok">&#x2713; 7 plaatsen</td></tr>
+          <tr><td>Huisdieren</td><td class="ok">&#x2713; 2 honden toegestaan</td></tr>
+        </table>
+        <div class="notes">
+          Gebouwd 2022, modern. Verwarmd buitenzwembad (8x4m) <strong>het hele jaar open</strong>.
+          Omheinde tuin 800 m&sup2; met vuurplaats. Baby-uitrusting beschikbaar.
+          Waarborg &euro;800 (niet-terugbetaalbaar). Familiegroepen geprefereerd.
+        </div>
+        <a href="https://fr.ardennes-etape.be/maisons-de-vacances-ardennes/Raeren/Maison-de-vacances-Sauna-Piscine-107141-01/" class="btn" target="_blank" rel="noopener">Bekijk &amp; Boek &rarr;</a>
+      </div>
+    </article>
+
+    <!-- #5 Maison Leglise -->
+    <article class="property-card">
+      <div class="card-header">
+        <h2>
+          <span class="rank">5</span>
+          Vakantiehuis Leglise
+          <span class="badge unconfirmed">Beschikbaarheid checken</span>
+        </h2>
+        <div class="score-bar">
+          Score: 8/12
+          <div class="score-track"><div class="score-fill" style="width:66.7%"></div></div>
+        </div>
+      </div>
+      <div class="meta">
+        <span>&#x1F4CD; Leglise, Luxemburg</span>
+        <span>&#x1F4B6; &euro;1.029-&euro;1.300 (2 nachten)</span>
+        <span>&#x1F465; 18 personen</span>
+        <span>&#x1F6CF;&#xFE0F; 6 kamers (en-suite)</span>
+        <span>&#x2B50; 9,5/10</span>
+      </div>
+      <div class="card-body">
+        <div class="amenities">
+          <span class="chip has">&#x1F3B1; Biljart</span>
+          <span class="chip has">&#x1F9D6; Sauna (6p)</span>
+          <span class="chip has">&#x1F6C1; Jacuzzi (5p)</span>
+          <span class="chip has">&#x1F525; Open haard</span>
+          <span class="chip bonus">&#x26BD; Speeltuin</span>
+          <span class="chip bonus">&#x26BD; Tafelvoetbal</span>
+        </div>
+        <table class="included">
+          <tr><td>Beddengoed</td><td class="warn">&#x26A0; Zelf meebrengen</td></tr>
+          <tr><td>Handdoeken</td><td class="warn">&#x26A0; Zelf meebrengen</td></tr>
+          <tr><td>Eindschoonmaak</td><td class="ok">&#x2713; Inbegrepen</td></tr>
+          <tr><td>WiFi</td><td class="ok">&#x2713; Ja</td></tr>
+          <tr><td>Keuken</td><td class="ok">&#x2713; Volledig (2 ovens, 2 koelkasten)</td></tr>
+          <tr><td>Parking</td><td class="ok">&#x2713; 8 plaatsen</td></tr>
+          <tr><td>Huisdieren</td><td class="ok">&#x2713; 2 honden toegestaan</td></tr>
+        </table>
+        <div class="notes">
+          <strong>Hoogste score: 9,5/10</strong> (23 beoordelingen). Beste prijs van alle opties.
+          450 m&sup2;, tuin 3.000 m&sup2; met overdekt terras (85 m&sup2;) en speeltuin.
+          Gebouwd 1920, gerenoveerd 2018. Wasmachine + droger.
+          Let op: beddengoed &eacute;n handdoeken zelf meebrengen. Waarborg &euro;800.
+        </div>
+        <a href="https://fr.ardennes-etape.be/maisons-de-vacances-ardennes/Leglise/Maison-de-vacances-Sauna-Jacuzzi-105955-02/" class="btn" target="_blank" rel="noopener">Bekijk &amp; Boek &rarr;</a>
+      </div>
+    </article>
+
+  </div>
+
+  <footer>
+    <p>Onderzoek uitgevoerd op 2026-03-03 &middot; Controleer beschikbaarheid en prijs v&oacute;&oacute;r boeking</p>
+    <p>Prijzen zijn schattingen voor laagseizoen november, tenzij anders vermeld</p>
+  </footer>
+</body>
+</html>
