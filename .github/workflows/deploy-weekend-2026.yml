@@ -1,0 +1,76 @@
+name: Deploy weekend-2026
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "weekend-2026/output/**"
+      - "weekend-2026/terraform/**"
+      - ".github/workflows/deploy-weekend-2026.yml"
+
+permissions:
+  id-token: write
+  contents: read
+
+jobs:
+  terraform:
+    name: Terraform Apply
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: weekend-2026/terraform
+    outputs:
+      s3_bucket: ${{ steps.tf-output.outputs.s3_bucket }}
+      distribution_id: ${{ steps.tf-output.outputs.distribution_id }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: hashicorp/setup-terraform@v3
+        with:
+          terraform_version: "1.9"
+          terraform_wrapper: false
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: ${{ secrets.AWS_ROLE_ARN }}
+          aws-region: eu-central-1
+
+      - name: Terraform Init
+        run: terraform init
+
+      - name: Terraform Apply
+        run: terraform apply -auto-approve
+
+      - name: Export outputs
+        id: tf-output
+        run: |
+          echo "s3_bucket=$(terraform output -raw s3_bucket_name)" >> "$GITHUB_OUTPUT"
+          echo "distribution_id=$(terraform output -raw cloudfront_distribution_id)" >> "$GITHUB_OUTPUT"
+
+  deploy:
+    name: Upload to S3 & Invalidate Cache
+    needs: terraform
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: ${{ secrets.AWS_ROLE_ARN }}
+          aws-region: eu-central-1
+
+      - name: Upload HTML to S3
+        run: |
+          aws s3 sync weekend-2026/output/ \
+            s3://${{ needs.terraform.outputs.s3_bucket }}/weekend-2026/ \
+            --delete \
+            --content-type "text/html" \
+            --cache-control "max-age=300"
+
+      - name: Invalidate CloudFront cache
+        run: |
+          aws cloudfront create-invalidation \
+            --distribution-id ${{ needs.terraform.outputs.distribution_id }} \
+            --paths "/weekend-2026/*"
